@@ -21,7 +21,7 @@ class Matrix:
 
     def __init__(self, elements):
         self._check_elements_format(elements)
-        self.elements = elements
+        self.elements = [list(row) for row in elements]
         self.height = len(elements)
         self.width = len(elements[0])
 
@@ -64,14 +64,11 @@ class Matrix:
         return self + (-other)
 
     def transposed(self):
-        return Matrix([[self[j, i] for j in range(self.width)] for i in range(self.height)])
-
-    def _multiply_matrix_by_number(self, matrix, number):
-        return Matrix([[number * i for i in row] for row in matrix.elements])
+        return Matrix([[self[j, i] for j in range(self.height)] for i in range(self.width)])
 
     def __mul__(self, other):
         if is_number(other):
-            return self._multiply_matrix_by_number(self, other)
+            return Matrix([[other * i for i in row] for row in self.elements])
         elif isinstance(other, Matrix):
             if self.width != other.height:
                 raise ArithmeticError("Matrices are not the right size to be multiplied!")
@@ -90,3 +87,6 @@ class Matrix:
 
     def __str__(self):
         return "|" + "|\n|".join(["".join(["{:4}".format(j) for j in i]) for i in self.elements]) + "|\n"
+
+    def __eq__(self, other):
+        return isinstance(other, Matrix) and self.elements == other.elements

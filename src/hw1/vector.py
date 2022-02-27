@@ -68,7 +68,4 @@ class Vector:
         return "(" + ", ".join([str(i) for i in self.elements]) + ")"
 
     def __eq__(self, other):
-        if not isinstance(other, Vector):
-            return False
-
-        return self.elements == other.elements
+        return isinstance(other, Vector) and self.elements == other.elements
