@@ -47,12 +47,24 @@ class Vector:
                 raise ArithmeticError("Vectors in the multiplication have a different length!")
 
             return sum([i * j for i, j in list(zip(self.elements, other.elements))])  # Scalar product.
+        else:
+            raise TypeError("A vector can only be multiplied by a number or a another vector!")
+
+    def __rmul__(self, other):
+        return self.__mul__(other)
 
     def angle(self, other):
+        if not isinstance(other, Vector):
+            raise TypeError("An angle can only between vectors!")
         if other.length != self.length:
             raise ArithmeticError("Can't find the angle between the vectors with a different length!")
 
-        return math.acos((self * other) / (self.module() * other.module()))
+        try:
+            angle = math.acos((self * other) / (self.module() * other.module()))
+        except ZeroDivisionError:
+            angle = None
+
+        return angle
 
     def __str__(self):
         return "(" + ", ".join([str(i) for i in self.elements]) + ")"
