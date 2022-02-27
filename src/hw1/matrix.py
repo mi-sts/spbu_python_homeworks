@@ -3,8 +3,7 @@ from src.util.type_checking import is_number
 
 class Matrix:
     def _check_elements_format(self, elements):
-        if not isinstance(elements, (list, tuple)) or not all(
-                isinstance(row, (list, tuple)) for row in elements):
+        if not isinstance(elements, (list, tuple)) or not all(isinstance(row, (list, tuple)) for row in elements):
             raise TypeError("A matrix elements should be in a two-dimensional array or tuple!")
 
         if not elements or not all(row for row in elements):
@@ -45,10 +44,10 @@ class Matrix:
 
     def __add__(self, other):
         if not isinstance(other, Matrix):
-            TypeError("A matrix can only be summed with a matrix!")
+            raise TypeError("A matrix can only be summed with a matrix!")
 
         if not self._have_same_dimensions(other):
-            ArithmeticError("Matrices should have same dimensions to be summed!")
+            raise ArithmeticError("Matrices should have same dimensions to be summed!")
 
         return Matrix([[self[i, j] + other[i, j] for j in range(self.width)] for i in range(self.height)])
 
@@ -57,10 +56,10 @@ class Matrix:
 
     def __sub__(self, other):
         if not isinstance(other, Matrix):
-            TypeError("A matrix can only be in a difference with a matrix!")
+            raise TypeError("A matrix can only be in a difference with a matrix!")
 
         if not self._have_same_dimensions(other):
-            ArithmeticError("Matrices should have dimensions to be in a difference!")
+            raise ArithmeticError("Matrices should have dimensions to be in a difference!")
 
         return self + (-other)
 
@@ -77,10 +76,13 @@ class Matrix:
             if self.width != other.height:
                 raise ArithmeticError("Matrices are not the right size to be multiplied!")
             return Matrix(
-                [[sum([self[k, i] * other[i, j] for i in range(self.width)]) for j in range(other.width)] for k in
-                 range(self.height)])
+                [
+                    [sum([self[k, i] * other[i, j] for i in range(self.width)]) for j in range(other.width)]
+                    for k in range(self.height)
+                ]
+            )
         else:
-            TypeError("A matrix can only be multiplied by a number or another matrix!")
+            raise TypeError("A matrix can only be multiplied by a number or another matrix!")
 
     def __rmul__(self, other):
         if not isinstance(other, Matrix):
