@@ -87,8 +87,6 @@ def test_angle(first, second, angle):
     assert round(first.angle(second), 7) == round(angle, 7)
 
 
-@pytest.mark.parametrize(
-    "first, second", [(Vector(0, 0), Vector(0, 0)), (Vector(1, 1), Vector(0, 0))]
-)
+@pytest.mark.parametrize("first, second", [(Vector(0, 0), Vector(0, 0)), (Vector(1, 1), Vector(0, 0))])
 def test_not_defined_angle(first, second):
     assert first.angle(second) is None
