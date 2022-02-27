@@ -1,12 +1,10 @@
 import math
+from src.util.type_checking import is_number
 
 
 class Vector:
-    def _is_number(self, element):
-        return isinstance(element, (int, float, complex))
-
     def __init__(self, first, *args):
-        if not all(self._is_number(element) for element in args):
+        if not all(is_number(element) for element in args):
             raise TypeError("A vector can't have a non-numeric element!")
 
         self.elements = [first] + list(args)
@@ -40,7 +38,7 @@ class Vector:
         return math.sqrt(sum([i * i for i in self.elements]))
 
     def __mul__(self, other):
-        if self._is_number(other):
+        if is_number(other):
             return Vector(*[other * i for i in self.elements])
         elif isinstance(other, Vector):
             if other.length != self.length:

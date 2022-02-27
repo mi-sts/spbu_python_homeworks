@@ -1,5 +1,6 @@
 import pytest
-from src.hw1.vector import *
+import math
+from src.hw1.vector import Vector
 
 
 @pytest.mark.parametrize(
