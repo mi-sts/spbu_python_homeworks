@@ -15,10 +15,10 @@ def _read_file(filename):
 
 def wc(filename):
     data = _read_file(filename)
-    if not data:
+    if data is None:
         return
 
-    strings_number = data.count("\n")
+    strings_number = data.count("\n") + 1 if data != "" else 0
     words_number = data.count(" ") + strings_number
     symbols_number = len(data)
 
@@ -31,7 +31,7 @@ def nl(filename):
         return
 
     strings = data.split("\n")
-    print("{0:4} {1}".format(i, strings[i]) for i in range(len(strings)))
+    print("\n".join(["{0:4} {1}".format(i + 1, strings[i]) for i in range(len(strings))]))
 
 
 def head(filename, lines_number=10):
