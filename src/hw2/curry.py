@@ -15,3 +15,5 @@ def curry_explicit(function: Callable, arity: int):
         return curry_func_tail
 
     return curry_func_tail
+
+def un
