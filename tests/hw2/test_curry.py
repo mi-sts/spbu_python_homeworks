@@ -12,7 +12,7 @@ def test_curry_uncurry():
 
 def test_arbitrary_arity_freezing():
     print_curried = curry_explicit(print, 2)
-    assert curry_explicit(print_curried, 2)(1)(2) is None
+    assert print_curried(1)(2) is None
 
 
 def test_print_currying(capfd):
