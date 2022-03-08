@@ -26,7 +26,7 @@ def uncurry_explicit(function: Callable, arity: int) -> Callable:
 
     def uncurried_function(*args) -> Any:
         if len(args) != arity:
-            raise AttributeError("Incorrect number of arguments in the function!")
+            raise TypeError("Incorrect number of arguments in the function!")
 
         nonlocal function
         for i in args[:-1]:
