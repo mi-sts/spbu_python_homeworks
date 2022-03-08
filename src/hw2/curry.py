@@ -1,14 +1,14 @@
-from typing import Callable
+from typing import Callable, Any
 
 
-def curry_explicit(function: Callable, arity: int):
+def curry_explicit(function: Callable, arity: int) -> Callable:
     if arity < 0:
         raise ValueError("Arity can't be negative!")
 
     if arity == 0 or arity == 1:
         return function
 
-    def arguments_accumulator(*args):
+    def arguments_accumulator(*args) -> Any:
         if len(args) == arity:
             return function(*args)
 
@@ -17,14 +17,14 @@ def curry_explicit(function: Callable, arity: int):
     return arguments_accumulator()
 
 
-def uncurry_explicit(function: Callable, arity: int):
+def uncurry_explicit(function: Callable, arity: int) -> Callable:
     if arity < 0:
-        return ValueError("Arity can't be negative!")
+        raise ValueError("Arity can't be negative!")
 
     if arity == 0 or arity == 1:
         return function
 
-    def uncurried_function(*args):
+    def uncurried_function(*args) -> Any:
         if len(args) != arity:
             raise AttributeError("Incorrect number of arguments in the function!")
 
