@@ -28,6 +28,7 @@ def test_print_usage_datetime():
     assert foo_args == [(0,), (1,), (2,)]
     assert boo_args == [(0, 0), (0, 1), (1, 0), (1, 1)]
 
+
 def test_wrapped_function_return():
     @spy
     def foo(num):
