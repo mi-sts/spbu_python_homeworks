@@ -1,5 +1,4 @@
 from typing import Callable
-from typing import Generator
 
 
 def spy(function: Callable):
