@@ -25,5 +25,5 @@ def test_print_usage_datetime():
     foo_args = [i[1] for i in foo_statistics]
     boo_args = [i[1] for i in boo_statistics]
 
-    assert foo_args == [(0, ), (1, ), (2, )]
+    assert foo_args == [(0,), (1,), (2,)]
     assert boo_args == [(0, 0), (0, 1), (1, 0), (1, 1)]
