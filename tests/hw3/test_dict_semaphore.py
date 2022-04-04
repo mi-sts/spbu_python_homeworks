@@ -38,7 +38,7 @@ def test_initial_dictionary_elements():
     assert initial_dictionary == {"1": -1, "2": 2, "3": 3, "4": 4, "5": 5}
 
 
-def test_not_with_access_safety():
+def test_nonwith_access_safety():
     dictionary = {"1": 1}
     locked_dictionary = LockDict(dictionary)
     try:
