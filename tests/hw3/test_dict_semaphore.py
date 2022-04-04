@@ -24,7 +24,8 @@ def test_safe_access():
         increasing_thread.start()
         decreasing_thread.start()
 
-    map(lambda t: t.join(), threads)
+    for i in threads:
+        i.join()
     assert dictionary["counter"] == 0
 
 
