@@ -1,7 +1,6 @@
 import pytest
 import time
 from threading import Thread
-
 from src.hw3.dict_semaphore import LockDict
 
 
