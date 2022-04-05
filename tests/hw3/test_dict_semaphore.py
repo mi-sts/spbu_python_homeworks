@@ -5,21 +5,20 @@ from src.hw3.dict_semaphore import LockDict
 
 
 def test_safe_access():
-    dictionary = {"counter": 0}
-    locked_dictionary = LockDict(dictionary)
-
     def long_calculation(value: int) -> int:
         time.sleep(0.001)
         return value
 
-    def add_to_counter(value: int):
+    def add_to_counter(value: int, locked_dictionary: LockDict):
         with locked_dictionary as ld:
             ld["counter"] += long_calculation(value)
 
     threads = []
+    dictionary = {"counter": 0}
+    locked_dictionary = LockDict(dictionary)
     for i in range(1000):
-        increasing_thread = Thread(target=add_to_counter, args=(100,))
-        decreasing_thread = Thread(target=add_to_counter, args=(-100,))
+        increasing_thread = Thread(target=add_to_counter, args=(100, locked_dictionary))
+        decreasing_thread = Thread(target=add_to_counter, args=(-100, locked_dictionary))
         threads.append(increasing_thread)
         threads.append(decreasing_thread)
         increasing_thread.start()
