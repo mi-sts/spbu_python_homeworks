@@ -1,6 +1,7 @@
 import pytest
 from src.hw2.curry import curry_explicit, uncurry_explicit
 
+
 def test_curry():
     function = lambda x, y, z: x + y - z
     curried_function = curry_explicit((lambda x, y, z: x + y - z), 3)
