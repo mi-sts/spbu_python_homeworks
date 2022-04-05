@@ -1,13 +1,23 @@
 import pytest
 from src.hw2.curry import curry_explicit, uncurry_explicit
 
+def test_curry():
+    function = lambda x, y, z: x + y - z
+    curried_function = curry_explicit((lambda x, y, z: x + y - z), 3)
+    assert curried_function(1)(3)(5) == function(1, 3, 5)
+
+
+def test_uncurry():
+    function = lambda x, y, z: x + y - z
+    curried_function = curry_explicit(function, 3)
+    uncurried_function = uncurry_explicit(curried_function, 3)
+    assert uncurried_function(1, 3, 5) == function(1, 3, 5)
+
 
 def test_curry_uncurry():
-    f2 = curry_explicit((lambda x, y, z: f"<{x},{y},{z}>"), 3)
-    g2 = uncurry_explicit(f2, 3)
-    expected_string = "<123,456,562>"
-    assert f2(123)(456)(562) == expected_string
-    assert g2(123, 456, 562) == expected_string
+    curried_function = curry_explicit((lambda x, y, z: f"<{x},{y},{z}>"), 3)
+    uncurried_function = uncurry_explicit(curried_function, 3)
+    assert curried_function(123)(456)(562) == uncurried_function(123, 456, 562)
 
 
 def test_arbitrary_arity_freezing():
@@ -22,17 +32,41 @@ def test_print_currying(capfd):
     assert out == "qwe rty uiop\n"
 
 
+def test_curry_zero_arity():
+    function = lambda: "123"
+    curried_function = curry_explicit(function, 0)
+    assert curried_function == function
+
+
+def test_uncurry_zero_arity():
+    function = lambda: "123"
+    curried_function = curry_explicit(function, 0)
+    uncurried_function = uncurry_explicit(curried_function, 0)
+    assert uncurried_function == function
+
+
 def test_curry_uncurry_zero_arity():
-    f = lambda: "123"
-    f_curried = curry_explicit(f, 0)
-    f_uncurried = uncurry_explicit(f_curried, 0)
-    assert f_curried == f
-    assert f_uncurried == f
+    function = lambda: "123"
+    curried_function = curry_explicit(function, 0)
+    uncurried_function = uncurry_explicit(curried_function, 0)
+    assert curried_function == uncurried_function
+
+
+def test_curry_one_arity():
+    function = lambda x: str(x)
+    curried_function = curry_explicit(function, 1)
+    assert curried_function == function
+
+
+def test_uncurry_one_arity():
+    function = lambda x: str(x)
+    curried_function = curry_explicit(function, 1)
+    uncurried_function = uncurry_explicit(curried_function, 1)
+    assert uncurried_function == function
 
 
 def test_curry_uncurry_one_arity():
-    f = lambda x: str(x)
-    f_curried = curry_explicit(f, 1)
-    f_uncurried = uncurry_explicit(f_curried, 1)
-    assert f_curried == f
-    assert f_uncurried == f
+    function = lambda x: str(x)
+    curried_function = curry_explicit(function, 1)
+    uncurried_function = uncurry_explicit(curried_function, 1)
+    assert curried_function == uncurried_function
