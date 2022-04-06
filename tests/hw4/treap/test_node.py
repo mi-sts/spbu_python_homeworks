@@ -1,5 +1,3 @@
-from typing import Optional
-
 import pytest
 from copy import deepcopy
 from src.hw4.treap.node import ChildSide
