@@ -14,7 +14,11 @@ class Treap:
         if self.root is None:
             return None
 
-        return self.root.find(key)
+        item = self.root.find(key)
+        if item is not None:
+            return item.priority
+
+        return None
 
     def __setitem__(self, key, priority):
         if self.root is None:
