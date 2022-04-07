@@ -1,7 +1,7 @@
 import pytest
 from copy import deepcopy
 
-from src.hw4.treap.node import Node, ChildSide
+from src.hw4.treap.node import Node
 
 #
 #                            (7, 10)
@@ -143,5 +143,5 @@ def test_find_unsuccessful():
 
 
 def test_find_parent():
-    parent_node, child_side = node_tree._find_parent(12, None, ChildSide.NONE)
-    assert (parent_node.get_pair(), child_side) == ((8, 9), ChildSide.RIGHT)
+    parent_node = node_tree._find_parent(12, None)
+    assert parent_node.get_pair() == (8, 9)

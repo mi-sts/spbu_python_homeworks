@@ -1,15 +1,8 @@
 from copy import deepcopy
-from enum import Enum
 from typing import Generic, Optional, Tuple, TypeVar
 
 K = TypeVar("K")
 V = TypeVar("V")
-
-
-class ChildSide(Enum):
-    LEFT = 0
-    RIGHT = 1
-    NONE = 2
 
 
 class Node(Generic[K, V]):
@@ -61,21 +54,21 @@ class Node(Generic[K, V]):
             and self.right == other.right
         )
 
-    def _insert(self, node: "Node", parent_node: Optional["Node"], node_side: ChildSide):
+    def _insert(self, node: "Node", parent_node: Optional["Node"]):
         if self.priority < node.priority:
             left_node, right_node = self.split(node.key)
             node.left, node.right = left_node, right_node
             if parent_node is not None:
-                parent_node._set_child_by_side(node, node_side)
+                parent_node._set_child_by_key(node, node.key)
         else:
-            child_node, child_side = self._get_child_by_key(node.key)
+            child_node = self._get_child_by_key(node.key)
             if child_node is not None:
-                child_node._insert(node, self, child_side)
+                child_node._insert(node, self)
             else:
-                self._set_child_by_side(node, node_side)
+                self._set_child_by_key(node, node.key)
 
     def insert(self, node: "Node"):
-        self._insert(node, None, ChildSide.NONE)
+        self._insert(node, None)
 
     def split(self, key: K) -> Tuple[Optional["Node"], Optional["Node"]]:
         if key >= self.key:
@@ -97,45 +90,34 @@ class Node(Generic[K, V]):
         if key == self.key:
             return self
 
-        if key > self.key:
-            if self.right is None:
-                return None
+        considered_child = self._get_child_by_key(key)
+        if considered_child is None:
+            return None
 
-            return self.right.find(key)
-        else:
-            if self.left is None:
-                return None
+        return considered_child.find(key)
 
-            return self.left.find(key)
-
-    def _find_parent(
-        self, key: K, current_parent: Optional["Node"], current_side: ChildSide
-    ) -> Tuple[Optional["Node"], ChildSide]:
+    def _find_parent(self, key: K, current_parent: Optional["Node"]) -> Optional["Node"]:
         if key == self.key:
-            return current_parent, current_side
+            return current_parent
 
-        if key > self.key:
-            if self.right is None:
-                return self, ChildSide.RIGHT
-            return self.right._find_parent(key, self, ChildSide.RIGHT)
-        else:
-            if self.left is None:
-                return self, ChildSide.LEFT
-            return self.left._find_parent(key, self, ChildSide.LEFT)
+        considered_child = self._get_child_by_key(key)
+        if considered_child is None:
+            return self
+        return considered_child._find_parent(key, self)
 
     def remove(self, key: K):
-        removing_node_parent, removing_node_side = self._find_parent(key, None, ChildSide.NONE)
+        removing_node_parent = self._find_parent(key, None)
         if removing_node_parent is None:
             return
 
-        removing_node = removing_node_parent._get_child_by_side(removing_node_side)
+        removing_node = removing_node_parent._get_child_by_key(key)
 
         if removing_node.left is not None:
             merged_children = removing_node.left.merge_with(removing_node.right)
         else:
             merged_children = removing_node.right
 
-        removing_node_parent._set_child_by_side(merged_children, removing_node_side)
+        removing_node_parent._set_child_by_key(merged_children, key)
 
     def merge_with(self, node: Optional["Node"]) -> "Node":
         if node is None:
@@ -158,27 +140,19 @@ class Node(Generic[K, V]):
     def get_pair(self) -> Tuple[K, V]:
         return self.key, self.priority
 
-    def _set_child_by_side(self, child: Optional["Node"], side: ChildSide):
+    def _set_child_by_key(self, child: Optional["Node"], key: K):
         if child is None:
             return
-        if side == ChildSide.LEFT:
-            self.left = child
-        elif side == ChildSide.RIGHT:
+        if key >= self.key:
             self.right = child
+        else:
+            self.left = child
 
-    def _get_child_by_side(self, side: ChildSide) -> Optional["Node"]:
-        if side == ChildSide.LEFT:
-            return self.left
-        elif side == ChildSide.RIGHT:
+    def _get_child_by_key(self, key: K) -> Optional["Node"]:
+        if key >= self.key:
             return self.right
 
-        return None
-
-    def _get_child_by_key(self, key: K) -> Tuple[Optional["Node"], ChildSide]:
-        if key >= self.key:
-            return self.right, ChildSide.RIGHT
-
-        return self.left, ChildSide.LEFT
+        return self.left
 
     def _node_item_to_string(self):
         return f"Node({self.key}, {self.priority})"
