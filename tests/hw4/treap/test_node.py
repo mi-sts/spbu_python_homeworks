@@ -3,6 +3,14 @@ from copy import deepcopy
 
 from src.hw4.treap.node import Node, ChildSide
 
+#
+#                            (7, 10)
+#                            /     \
+#                       (5, 8)     (8, 9)
+#                       /               \
+#                 (-2, 7)               (12, 5)
+#                        \              /     \
+#                        (-1, 6)  (10, 3)     (16, 2)
 node_tree = Node(
     7, 10, Node(5, 8, Node(-2, 7, None, Node(-1, 6))), Node(8, 9, None, Node(12, 5, Node(10, 3), Node(16, 2)))
 )
