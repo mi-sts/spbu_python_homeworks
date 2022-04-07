@@ -1,7 +1,7 @@
 import pytest
 from copy import deepcopy
-from src.hw4.treap.node import ChildSide
-from src.hw4.treap.treap import Node
+
+from src.hw4.treap.node import Node, ChildSide
 
 node_tree = Node(
     7, 10, Node(5, 8, Node(-2, 7, None, Node(-1, 6))), Node(8, 9, None, Node(12, 5, Node(10, 3), Node(16, 2)))
@@ -34,28 +34,6 @@ def test_not_contains():
     assert 2 not in node_tree
 
 
-def test_set_child():
-    node = Node(1, 2)
-    child = Node(3, 4)
-    node.set_child(child, ChildSide.RIGHT)
-    assert node.right == child
-
-
-def test_get_child():
-    node = Node(1, 2, Node(3, 4), Node(5, 6))
-    assert node.get_child(ChildSide.LEFT) == Node(3, 4)
-
-
-def test_get_child_by_key_greater():
-    node = Node(1, 2, Node(3, 4), Node(5, 6))
-    assert node.get_child_by_key(10) == (Node(5, 6), ChildSide.RIGHT)
-
-
-def test_get_child_by_key_less():
-    node = Node(1, 2, Node(3, 4), Node(5, 6))
-    assert node.get_child_by_key(0) == (Node(3, 4), ChildSide.LEFT)
-
-
 def test_deepcopy_accordance():
     node = Node(1, 2, Node(3, 4), Node(5, 6, Node(7, 8)))
     node_deepcopy = deepcopy(node)
@@ -65,8 +43,8 @@ def test_deepcopy_accordance():
 def test_deepcopy_change_independent():
     node = Node(1, 2, Node(3, 4), Node(5, 6, Node(7, 8)))
     node_deepcopy = deepcopy(node)
-    node_deepcopy.set_child(Node(10, 10), ChildSide.RIGHT)
-    assert node.get_child(ChildSide.RIGHT).get_pair() != (10, 10)
+    node_deepcopy.right = Node(10, 10)
+    assert node.right.get_pair() != (10, 10)
 
 
 def test_merge_with():
@@ -157,5 +135,5 @@ def test_find_unsuccessful():
 
 
 def test_find_parent():
-    parent_node, child_side = node_tree.find_parent(12)
-    assert (parent_node.get_pair(), child_side == (8, 9), ChildSide.RIGHT)
+    parent_node, child_side = node_tree._find_parent(12, None, ChildSide.NONE)
+    assert (parent_node.get_pair(), child_side) == ((8, 9), ChildSide.RIGHT)

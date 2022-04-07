@@ -83,7 +83,7 @@ def test_iter():
 
 def test_split():
     treap = Treap(deepcopy(node_tree))
-    left_treap, right_treap = treap.split(9)
+    left_treap, right_treap = treap._split(9)
     assert get_treap_pairs(left_treap) == [(7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9)]
     assert get_treap_pairs(right_treap) == [(12, 5), (10, 3), (16, 2)]
 
@@ -91,7 +91,7 @@ def test_split():
 def test_merge_with():
     first_treap = Treap(deepcopy(node_tree))
     second_treap = Treap({20: 9, 22: 15, 26: 2})
-    first_treap.merge_with(second_treap)
+    first_treap._merge_with(second_treap)
     assert get_treap_pairs(first_treap) == [
         (22, 15),
         (7, 10),

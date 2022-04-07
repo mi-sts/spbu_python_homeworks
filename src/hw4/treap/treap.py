@@ -1,16 +1,22 @@
+from typing import Dict, Tuple, TypeVar, Generic
+
 from src.hw4.treap.node import Node
-from typing import Dict, Tuple
+
+K = TypeVar("K")
+V = TypeVar("V")
 
 
-class Treap:
-    def __init__(self, init_object: Dict | Node):
+class Treap(Generic[K, V]):
+    def __init__(self, *args):
         self.root = None
-        if isinstance(init_object, Dict):
-            self._build(init_object)
-        elif isinstance(init_object, Node):
-            self.root = init_object
+        if len(args) == 1:
+            init_object = args[0]
+            if isinstance(init_object, Dict):
+                self._build(init_object)
+            elif isinstance(init_object, Node):
+                self.root = init_object
 
-    def __getitem__(self, key) -> object:
+    def __getitem__(self, key: K) -> V:
         if self.root is None:
             return None
 
@@ -20,7 +26,7 @@ class Treap:
 
         return None
 
-    def __setitem__(self, key, priority):
+    def __setitem__(self, key: K, priority: V):
         if self.root is None:
             self.root = Node(key, priority)
             return
@@ -30,11 +36,11 @@ class Treap:
         if self.root.priority < priority:
             self.root = inserting_node
 
-    def __contains__(self, item):
+    def __contains__(self, key: K):
         if self.root is None:
             return False
 
-        return item in self.root
+        return key in self.root
 
     def __repr__(self):
         if self.root is None:
@@ -51,30 +57,26 @@ class Treap:
     def __del__(self):
         self.root = None
 
-    def split(self, key: object) -> Tuple["Treap", "Treap"]:
+    def remove(self, key: K):
+        if self.root is None:
+            return
+
+        if self.root.key == key:
+            self.root = None
+            return
+
+        self.root.remove(key)
+
+    def _split(self, key: K) -> Tuple["Treap", "Treap"]:
         left_root, right_root = self.root.split(key)
         return Treap(left_root), Treap(right_root)
 
-    def merge_with(self, treap: "Treap"):
+    def _merge_with(self, treap: "Treap"):
         if self.root is None:
             self.root = treap.root
             return
 
         self.root = self.root.merge_with(treap.root)
-
-    def remove(self, key: object):
-        if self.root is None:
-            return
-
-        removing_node_parent, removing_node_side = self.root.find_parent(key)
-        if removing_node_parent is None:
-            return
-        removing_node = removing_node_parent.get_child(removing_node_side)
-        if removing_node.left is not None:
-            merged_children = removing_node.left.merge_with(removing_node.right)
-        else:
-            merged_children = removing_node.right
-        removing_node_parent.set_child(merged_children, removing_node_side)
 
     def _build(self, elements: Dict):
         sorted_elements = sorted(map(lambda item: Node(item[0], item[1]), elements.items()), key=lambda item: item.key)
