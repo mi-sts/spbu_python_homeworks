@@ -37,7 +37,7 @@ class Vector:
 
         return self + (-other)
 
-    def module(self):
+    def module(self) -> float:
         return math.sqrt(sum([i * i for i in self.elements]))
 
     def __mul__(self, other):
@@ -54,7 +54,7 @@ class Vector:
     def __rmul__(self, other):
         return self.__mul__(other)
 
-    def angle(self, other):
+    def angle(self, other: "Vector") -> float:
         if not isinstance(other, Vector):
             raise TypeError("An angle can only between vectors!")
         if other.length != self.length:

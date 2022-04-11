@@ -16,7 +16,7 @@ class Matrix:
         if not all(len(row) == row_length for row in elements):
             raise ValueError("A matrix rows should have an equal length!")
 
-    def _have_same_dimensions(self, other):
+    def _have_same_dimensions(self, other: "Matrix") -> bool:
         return self.height == other.height and self.width == other.width
 
     def __init__(self, elements):
