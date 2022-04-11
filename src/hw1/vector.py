@@ -3,12 +3,15 @@ from src.util.type_checking import is_number
 
 
 class Vector:
-    def __init__(self, first, *args):
+    def __init__(self, *args):
         if not all(is_number(element) for element in args):
             raise TypeError("A vector can't have a non-numeric element!")
 
-        self.elements = [first] + list(args)
-        self.length = 1 + len(args)
+        if len(args) == 0:
+            raise TypeError("A vector should contain at least one argument!")
+
+        self.elements = list(args)
+        self.length = len(args)
 
     def __len__(self):
         return len(self.elements)
