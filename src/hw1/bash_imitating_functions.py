@@ -1,49 +1,70 @@
-def _read_file(filename):
-    try:
-        file = open(filename)
-    except IOError:
-        print("No such file or directory")
-        return None
-    except:
-        print("Unexpected error")
+import os
+
+
+def _open_file(filename):
+    if not os.path.exists(filename):
         return None
 
-    data = file.read()
-    file.close()
-    return data
+    file = open(filename)
+
+    return file
 
 
 def wc(filename):
-    data = _read_file(filename)
-    if data is None:
+    file = _open_file(filename)
+    if file is None:
         return
 
-    strings_number = data.count("\n") + 1 if data != "" else 0
-    words_number = data.count(" ") + strings_number
-    symbols_number = len(data)
+    strings_number = 0
+    words_number = 0
+    symbols_number = 0
 
-    print("{0} {1} {2} {3}".format(strings_number, words_number, symbols_number, filename))
+    line = file.readline()
+    while line:
+        strings_number += 1 if line != "" else 0
+        words_number += line.count(" ") + 1
+        symbols_number += len(line)
+        line = file.readline()
+    file.close()
+
+    print(f"{strings_number} {words_number} {symbols_number} {filename}")
 
 
 def nl(filename):
-    data = _read_file(filename)
-    if not data:
+    file = _open_file(filename)
+    if not file:
         return
 
-    strings = data.split("\n")
-    print("\n".join(["{0:4} {1}".format(i + 1, strings[i]) for i in range(len(strings))]))
+    output_string = ""
+    for i in range(10):
+        line = file.readline()
+        if not line:
+            break
 
+        output_string += "{0:4} {1}".format(i + 1, line)
+    file.close()
+
+    print(output_string)
 
 def head(filename, lines_number=10):
     if lines_number <= 0:
         print("Incorrect number of lines")
         return
 
-    data = _read_file(filename)
-    if not data:
+    file = _open_file(filename)
+    if not file:
         return
 
-    print("\n".join(data.split("\n")[:lines_number]))
+    output_string = ""
+    for i in range(lines_number):
+        line = file.readline()
+        if not line:
+            break
+
+        output_string += line
+    file.close()
+
+    print(output_string, end="")
 
 
 def tail(filename, lines_number=10):
@@ -51,8 +72,11 @@ def tail(filename, lines_number=10):
         print("Incorrect number of lines")
         return
 
-    data = _read_file(filename)
-    if not data:
+    file = _open_file(filename)
+    if not file:
         return
+
+    data = file.read()
+    file.close()
 
     print("\n".join(data.split("\n")[-lines_number:]))
