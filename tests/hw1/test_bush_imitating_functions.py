@@ -5,7 +5,7 @@ from src.hw1.bash_imitating_functions import *
 
 @pytest.fixture
 def temp_file(tmp_path):
-    filename = "{0}.txt".format(time.time())
+    filename = f"{time.time()}.txt"
     temp_dir = tmp_path / "test_bush_imitating_functions"
     temp_dir.mkdir()
     temp_file = temp_dir / filename

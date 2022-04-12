@@ -15,19 +15,19 @@ def wc(filename):
     if file is None:
         return
 
-    strings_number = 0
-    words_number = 0
-    symbols_number = 0
+    n_strings = 0
+    n_words = 0
+    n_symbols = 0
 
     line = file.readline()
     while line:
-        strings_number += 1 if line != "" else 0
-        words_number += line.count(" ") + 1
-        symbols_number += len(line)
+        n_strings += 1 if line != "" else 0
+        n_words += line.count(" ") + 1
+        n_symbols += len(line)
         line = file.readline()
     file.close()
 
-    print(f"{strings_number} {words_number} {symbols_number} {filename}")
+    print(f"{n_strings} {n_words} {n_symbols} {filename}")
 
 
 def nl(filename):
@@ -46,8 +46,8 @@ def nl(filename):
 
     print(output_string)
 
-def head(filename, lines_number=10):
-    if lines_number <= 0:
+def head(filename, n_lines=10):
+    if n_lines <= 0:
         print("Incorrect number of lines")
         return
 
@@ -56,7 +56,7 @@ def head(filename, lines_number=10):
         return
 
     output_string = ""
-    for i in range(lines_number):
+    for i in range(n_lines):
         line = file.readline()
         if not line:
             break
@@ -67,8 +67,8 @@ def head(filename, lines_number=10):
     print(output_string, end="")
 
 
-def tail(filename, lines_number=10):
-    if lines_number <= 0:
+def tail(filename, n_lines=10):
+    if n_lines <= 0:
         print("Incorrect number of lines")
         return
 
@@ -79,4 +79,4 @@ def tail(filename, lines_number=10):
     data = file.read()
     file.close()
 
-    print("\n".join(data.split("\n")[-lines_number:]))
+    print("\n".join(data.split("\n")[-n_lines:]))
