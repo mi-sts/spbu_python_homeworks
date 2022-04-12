@@ -46,6 +46,7 @@ def nl(filename):
 
     print(output_string)
 
+
 def head(filename, n_lines=10):
     if n_lines <= 0:
         print("Incorrect number of lines")
