@@ -1,7 +1,8 @@
 import os
+from typing import IO, Optional
 
 
-def _open_file(filename):
+def _open_file(filename: str) -> Optional[IO]:
     if not os.path.exists(filename):
         return None
 
@@ -10,7 +11,7 @@ def _open_file(filename):
     return file
 
 
-def wc(filename):
+def wc(filename: str) -> None:
     file = _open_file(filename)
     if file is None:
         return
@@ -30,7 +31,7 @@ def wc(filename):
     print(f"{n_strings} {n_words} {n_symbols} {filename}")
 
 
-def nl(filename):
+def nl(filename: str) -> None:
     file = _open_file(filename)
     if not file:
         return
@@ -47,7 +48,7 @@ def nl(filename):
     print(output_string)
 
 
-def head(filename, n_lines=10):
+def head(filename: str, n_lines: int = 10) -> None:
     if n_lines <= 0:
         print("Incorrect number of lines")
         return
@@ -68,7 +69,7 @@ def head(filename, n_lines=10):
     print(output_string, end="")
 
 
-def tail(filename, n_lines=10):
+def tail(filename: str, n_lines: int = 10) -> None:
     if n_lines <= 0:
         print("Incorrect number of lines")
         return
