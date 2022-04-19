@@ -44,8 +44,17 @@ def test_get_item_unsuccessful():
 def test_set_item_new():
     treap = Treap(deepcopy(node_tree))
     treap[11] = 7
-    assert set(get_treap_pairs(treap)) == {(7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9), (11, 7), (10, 3), (12, 5),
-                                           (16, 2)}
+    assert set(get_treap_pairs(treap)) == {
+        (7, 10),
+        (5, 8),
+        (-2, 7),
+        (-1, 6),
+        (8, 9),
+        (11, 7),
+        (10, 3),
+        (12, 5),
+        (16, 2),
+    }
 
 
 def test_set_item_overwriting():
@@ -57,7 +66,17 @@ def test_set_item_overwriting():
 def test_set_item_change_root():
     treap = Treap(deepcopy(node_tree))
     treap[15] = 20
-    assert set(get_treap_pairs(treap)) == {(15, 20), (7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9), (12, 5), (10, 3), (16, 2)}
+    assert set(get_treap_pairs(treap)) == {
+        (15, 20),
+        (7, 10),
+        (5, 8),
+        (-2, 7),
+        (-1, 6),
+        (8, 9),
+        (12, 5),
+        (10, 3),
+        (16, 2),
+    }
 
 
 def test_contain():

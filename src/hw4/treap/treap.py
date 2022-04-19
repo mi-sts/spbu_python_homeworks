@@ -128,9 +128,7 @@ class Treap(Generic[K, V]):
         self.root = merged_treaps_root
 
     def _build(self, elements: Dict):
-        sorted_elements = sorted(
-            map(lambda item: Node(item[0], item[1]), elements.items()), key=lambda item: item.key
-        )
+        sorted_elements = sorted(map(lambda item: Node(item[0], item[1]), elements.items()), key=lambda item: item.key)
         parents = [None] * len(elements)
         self.root = sorted_elements[0]
 
