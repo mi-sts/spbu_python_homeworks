@@ -1,3 +1,4 @@
+import random
 from copy import deepcopy
 from typing import Generic, Optional, Tuple, TypeVar
 
@@ -6,9 +7,10 @@ V = TypeVar("V")
 
 
 class Node(Generic[K, V]):
-    def __init__(self, key: K, priority: V, left: Optional["Node"] = None, right: Optional["Node"] = None):
+    def __init__(self, key: K, data: V, left: Optional["Node"] = None, right: Optional["Node"] = None):
         self.key = key
-        self.priority = priority
+        self.data = data
+        self.priority = random.random()
         self.left = left
         self.right = right
 
@@ -35,7 +37,8 @@ class Node(Generic[K, V]):
             yield from iter(self.right)
 
     def __deepcopy__(self, memo):
-        node_copy = Node(self.key, self.priority)
+        node_copy = Node(self.key, self.data)
+        node_copy.priority = self.priority
         if self.left is not None:
             node_copy.left = deepcopy(self.left)
         if self.right is not None:
@@ -46,13 +49,14 @@ class Node(Generic[K, V]):
         return (
             isinstance(other, Node)
             and other.key == self.key
+            and other.data == self.data
             and other.priority == self.priority
             and self.left == other.left
             and self.right == other.right
         )
 
     def get_pair(self) -> Tuple[K, V]:
-        return self.key, self.priority
+        return self.key, self.data
 
     def _node_item_to_string(self):
-        return f"Node({self.key}, {self.priority})"
+        return f"Node({self.key}, {self.data})"

@@ -1,3 +1,4 @@
+import random
 from typing import Dict, Tuple, TypeVar, Generic, Optional
 
 from src.hw4.treap.node import Node
@@ -60,12 +61,12 @@ class Treap(Generic[K, V]):
     def __getitem__(self, key: K) -> Optional[V]:
         found_node = _find_in(self.root, key)
         if found_node is not None:
-            return found_node.priority
+            return found_node.data
 
         return None
 
-    def __setitem__(self, key: K, priority: V):
-        inserting_node = Node(key, priority)
+    def __setitem__(self, key: K, data: V):
+        inserting_node = Node(key, data)
         if self.root is None:
             self.root = inserting_node
             return
@@ -127,7 +128,9 @@ class Treap(Generic[K, V]):
         self.root = merged_treaps_root
 
     def _build(self, elements: Dict):
-        sorted_elements = sorted(map(lambda item: Node(item[0], item[1]), elements.items()), key=lambda item: item.key)
+        sorted_elements = sorted(
+            map(lambda item: Node(item[0], item[1]), elements.items()), key=lambda item: item.key
+        )
         parents = [None] * len(elements)
         self.root = sorted_elements[0]
 

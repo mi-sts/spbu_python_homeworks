@@ -23,12 +23,12 @@ def get_treap_pairs(treap: Treap):
 
 def test_init_with_dict():
     treap = Treap(tree_elements)
-    assert get_treap_pairs(treap) == [node.get_pair() for node in node_tree]
+    assert set(get_treap_pairs(treap)) == set([node.get_pair() for node in node_tree])
 
 
 def test_init_with_root_node():
     treap = Treap(deepcopy(node_tree))
-    assert get_treap_pairs(treap) == [node.get_pair() for node in node_tree]
+    assert set(get_treap_pairs(treap)) == set([node.get_pair() for node in node_tree])
 
 
 def test_get_item_successful():
@@ -44,19 +44,20 @@ def test_get_item_unsuccessful():
 def test_set_item_new():
     treap = Treap(deepcopy(node_tree))
     treap[11] = 7
-    assert get_treap_pairs(treap) == [(7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9), (11, 7), (10, 3), (12, 5), (16, 2)]
+    assert set(get_treap_pairs(treap)) == {(7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9), (11, 7), (10, 3), (12, 5),
+                                           (16, 2)}
 
 
 def test_set_item_overwriting():
     treap = Treap(deepcopy(node_tree))
     treap[-2] = 9
-    assert get_treap_pairs(treap) == [(7, 10), (-2, 9), (5, 8), (-1, 6), (8, 9), (12, 5), (10, 3), (16, 2)]
+    assert set(get_treap_pairs(treap)) == {(7, 10), (-2, 9), (5, 8), (-1, 6), (8, 9), (12, 5), (10, 3), (16, 2)}
 
 
 def test_set_item_change_root():
     treap = Treap(deepcopy(node_tree))
     treap[15] = 20
-    assert get_treap_pairs(treap) == [(15, 20), (7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9), (12, 5), (10, 3), (16, 2)]
+    assert set(get_treap_pairs(treap)) == {(15, 20), (7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9), (12, 5), (10, 3), (16, 2)}
 
 
 def test_contain():
@@ -100,7 +101,7 @@ def test_merge_with():
     first_treap = Treap(deepcopy(node_tree))
     second_treap = Treap({20: 9, 22: 15, 26: 2})
     treap = Treap(_merge(first_treap.root, second_treap.root))
-    assert get_treap_pairs(treap) == [
+    assert set(get_treap_pairs(treap)) == {
         (22, 15),
         (7, 10),
         (5, 8),
@@ -112,10 +113,10 @@ def test_merge_with():
         (10, 3),
         (16, 2),
         (26, 2),
-    ]
+    }
 
 
 def test_remove():
     treap = Treap(deepcopy(node_tree))
     treap.remove(12)
-    assert get_treap_pairs(treap) == [(7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9), (10, 3), (16, 2)]
+    assert set(get_treap_pairs(treap)) == {(7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9), (10, 3), (16, 2)}
