@@ -1,3 +1,5 @@
+from typing import Optional
+
 import pytest
 from copy import deepcopy
 from src.hw4.treap.node import Node
@@ -17,18 +19,33 @@ node_tree = Node(
 tree_elements = {7: 10, 12: 5, 8: 9, 16: 2, 10: 3, 5: 8, -1: 6, -2: 7}
 
 
-def get_treap_pairs(treap: Treap):
+def _get_treap_pairs(treap: Treap):
     return [node.get_pair() for node in treap]
 
 
 def test_init_with_dict():
     treap = Treap(tree_elements)
-    assert set(get_treap_pairs(treap)) == set([node.get_pair() for node in node_tree])
+    assert set(_get_treap_pairs(treap)) == set([node.get_pair() for node in node_tree])
 
 
 def test_init_with_root_node():
     treap = Treap(deepcopy(node_tree))
-    assert set(get_treap_pairs(treap)) == set([node.get_pair() for node in node_tree])
+    assert set(_get_treap_pairs(treap)) == set([node.get_pair() for node in node_tree])
+
+
+def _have_right_priority(node: Optional[Node], parent: Optional[Node]):
+    if node is None or parent is None:
+        return True
+
+    if parent.priority < node.priority:
+        return False
+
+    return _have_right_priority(node.left, node) and _have_right_priority(node.right, node)
+
+
+def test_priorities_assignment():
+    treap = Treap(tree_elements)
+    assert _have_right_priority(treap.root, None)
 
 
 def test_get_item_successful():
@@ -44,7 +61,7 @@ def test_get_item_unsuccessful():
 def test_set_item_new():
     treap = Treap(deepcopy(node_tree))
     treap[11] = 7
-    assert set(get_treap_pairs(treap)) == {
+    assert set(_get_treap_pairs(treap)) == {
         (7, 10),
         (5, 8),
         (-2, 7),
@@ -60,13 +77,13 @@ def test_set_item_new():
 def test_set_item_overwriting():
     treap = Treap(deepcopy(node_tree))
     treap[-2] = 9
-    assert set(get_treap_pairs(treap)) == {(7, 10), (-2, 9), (5, 8), (-1, 6), (8, 9), (12, 5), (10, 3), (16, 2)}
+    assert set(_get_treap_pairs(treap)) == {(7, 10), (-2, 9), (5, 8), (-1, 6), (8, 9), (12, 5), (10, 3), (16, 2)}
 
 
 def test_set_item_change_root():
     treap = Treap(deepcopy(node_tree))
     treap[15] = 20
-    assert set(get_treap_pairs(treap)) == {
+    assert set(_get_treap_pairs(treap)) == {
         (15, 20),
         (7, 10),
         (5, 8),
@@ -106,21 +123,21 @@ def test_repr():
 
 def test_iter():
     treap = Treap(deepcopy(node_tree))
-    assert get_treap_pairs(treap) == [(7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9), (12, 5), (10, 3), (16, 2)]
+    assert _get_treap_pairs(treap) == [(7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9), (12, 5), (10, 3), (16, 2)]
 
 
 def test_split():
     treap = Treap(deepcopy(node_tree))
     left_root, right_root = _split(treap.root, 9)
-    assert get_treap_pairs(Treap(left_root)) == [(7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9)]
-    assert get_treap_pairs(Treap(right_root)) == [(12, 5), (10, 3), (16, 2)]
+    assert _get_treap_pairs(Treap(left_root)) == [(7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9)]
+    assert _get_treap_pairs(Treap(right_root)) == [(12, 5), (10, 3), (16, 2)]
 
 
 def test_merge_with():
     first_treap = Treap(deepcopy(node_tree))
     second_treap = Treap({20: 9, 22: 15, 26: 2})
     treap = Treap(_merge(first_treap.root, second_treap.root))
-    assert set(get_treap_pairs(treap)) == {
+    assert set(_get_treap_pairs(treap)) == {
         (22, 15),
         (7, 10),
         (5, 8),
@@ -138,4 +155,4 @@ def test_merge_with():
 def test_remove():
     treap = Treap(deepcopy(node_tree))
     treap.remove(12)
-    assert set(get_treap_pairs(treap)) == {(7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9), (10, 3), (16, 2)}
+    assert set(_get_treap_pairs(treap)) == {(7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9), (10, 3), (16, 2)}
