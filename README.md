@@ -8,3 +8,7 @@
 
 ### Homework #2:
 * Implement a currying and uncurrying functions.
+
+### Homework #3:
+* Implement a semaphore using a context manager for multi-threaded writing/reading to a dictionary.
+* Using the asyncio and bs4 libraries, implement asynchronous downloading of images from the site https://www.thisfuckeduphomerdoesnotexist.com.
