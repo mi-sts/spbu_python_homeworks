@@ -15,7 +15,7 @@ def words_statistics(filename: str) -> str:
     n_sentences = 0
 
     while line:
-        line_elements = re.findall(r"\w+|['.!?]", line) # Divide into punctuation and letter symbols.
+        line_elements = re.findall(r"[\w']+|['.!?]", line)  # Divide into punctuation and letter symbols.
         last_is_punctuation = False
         for i in line_elements:
             if i in punctuation_symbols and not last_is_punctuation:
@@ -31,4 +31,8 @@ def words_statistics(filename: str) -> str:
     top_words = words.most_common()[:10]
     file.close()
 
-    return f"top-10 words: {', '.join(words)}number of sentences: {n_sentences}"
+    return f"Top-10 words: {', '.join([f'{i[0]} - {i[1]}' for i in top_words])}. Number of sentences: {n_sentences}"
+
+
+if __name__ == "__main__":
+    print(words_statistics("tomsawyer.txt"))
