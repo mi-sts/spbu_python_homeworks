@@ -26,13 +26,9 @@ def words_statistics(filename: str) -> str:
                 word = i.lower()
                 words[word] += 1
 
+        line = file.readline()
+
     top_words = words.most_common()[:10]
+    file.close()
+
     return f"top-10 words: {', '.join(words)}number of sentences: {n_sentences}"
-
-
-
-
-
-
-
-
