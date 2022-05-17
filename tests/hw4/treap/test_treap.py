@@ -152,7 +152,17 @@ def test_merge_with():
     }
 
 
-def test_remove():
+def test_delitem():
     treap = Treap(deepcopy(node_tree))
-    treap.remove(12)
+    del treap[12]
     assert set(_get_treap_pairs(treap)) == {(7, 10), (5, 8), (-2, 7), (-1, 6), (8, 9), (10, 3), (16, 2)}
+
+
+def test_len():
+    treap = Treap({1: "a", 2: "b", 3: "c", 4: "d", -5: "e"})
+    assert len(treap) == 5
+
+
+def test_empty_treap_len():
+    treap = Treap()
+    assert len(treap) == 0

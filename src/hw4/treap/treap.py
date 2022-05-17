@@ -1,4 +1,4 @@
-import random
+from collections.abc import MutableMapping
 from typing import Dict, Tuple, TypeVar, Generic, Optional
 
 from src.hw4.treap.node import Node
@@ -48,7 +48,7 @@ def _find_in(node: Optional[Node], key: K) -> Optional[Node]:
         return _find_in(node.left, key)
 
 
-class Treap(Generic[K, V]):
+class Treap(MutableMapping[K, V]):
     def __init__(self, *args):
         self.root = None
         if len(args) == 1:
@@ -72,34 +72,13 @@ class Treap(Generic[K, V]):
             return
 
         if key in self:
-            self.remove(key)
+            del self[key]
         left_root, right_root = _split(self.root, key)
         treap_left = _merge(left_root, inserting_node)
         merged_treaps_root = _merge(treap_left, right_root)
         self.root = merged_treaps_root
 
-    def __contains__(self, key: K):
-        if self.root is None:
-            return False
-
-        return _find_in(self.root, key) is not None
-
-    def __repr__(self):
-        if self.root is None:
-            root_representation = "None"
-        else:
-            root_representation = repr(self.root)
-
-        return f"Treap():\n{root_representation}"
-
-    def __iter__(self):
-        if self.root is not None:
-            yield from iter(self.root)
-
-    def __del__(self):
-        self.root = None
-
-    def remove(self, key: K):
+    def __delitem__(self, key: K):
         if self.root is None:
             return
 
@@ -126,6 +105,30 @@ class Treap(Generic[K, V]):
 
         merged_treaps_root = _merge(left_root, right_root)
         self.root = merged_treaps_root
+
+    def __len__(self):
+        return len(list(i for i in self))
+
+    def __contains__(self, key: K):
+        if self.root is None:
+            return False
+
+        return _find_in(self.root, key) is not None
+
+    def __repr__(self):
+        if self.root is None:
+            root_representation = "None"
+        else:
+            root_representation = repr(self.root)
+
+        return f"Treap():\n{root_representation}"
+
+    def __iter__(self):
+        if self.root is not None:
+            yield from iter(self.root)
+
+    def __del__(self):
+        self.root = None
 
     def _build(self, elements: Dict):
         sorted_elements = sorted(map(lambda item: Node(item[0], item[1]), elements.items()), key=lambda item: item.key)
