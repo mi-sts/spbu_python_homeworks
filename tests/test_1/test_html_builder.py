@@ -31,7 +31,9 @@ def test_generate():
             with html.div():
                 html.p("Third string.")
 
-    assert html.generate() == """<body>
+    assert (
+        html.generate()
+        == """<body>
   <div>
     <div>
       <p>First string.</p>
@@ -43,3 +45,4 @@ def test_generate():
   </div>
 </body>
 """
+    )
