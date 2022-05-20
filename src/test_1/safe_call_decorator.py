@@ -13,7 +13,9 @@ def safe_call(file: IO):
                 func_result = func(*args, **kwargs)
                 return func_result
             except Exception as exception:
-                file.write(_get_logging_text(func, args, kwargs, exception))
+                if not file.closed:
+                    file.write(_get_logging_text(func, args, kwargs, exception))
+                    file.close()
                 return None
 
         return wrapper
