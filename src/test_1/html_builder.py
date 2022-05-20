@@ -26,7 +26,7 @@ class HTML:
         self.nesting_level = 0
 
     def _get_indent_string(self) -> str:
-        return '  ' * self.nesting_level
+        return "  " * self.nesting_level
 
     def start_containing_tag(self, tag_name):
         self.add_text(self._get_indent_string() + f"<{tag_name}>\n")
