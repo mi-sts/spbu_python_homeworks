@@ -1,4 +1,4 @@
-import test
+import pytest
 from src.test_1.function_usage_statistics import spy
 from src.test_1.function_usage_statistics import print_usage_statistic
 

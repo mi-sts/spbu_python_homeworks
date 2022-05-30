@@ -1,7 +1,6 @@
 import pytest
 import time
 import pathlib
-import typing
 from src.test_1.safe_call_decorator import safe_call
 
 
@@ -11,6 +10,7 @@ def temp_file_path(tmp_path) -> pathlib.Path:
     temp_dir = tmp_path / "test_bush_imitating_functions"
     temp_dir.mkdir()
     temp_file_path = temp_dir / filename
+
     return temp_file_path
 
 
