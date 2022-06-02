@@ -15,7 +15,7 @@ from src.final_work.image_converter import ImageConverter, ModelType
 
 
 class AnimeSceneryBot:
-    MAX_IMAGE_SIZE = 1280
+    MAX_IMAGE_SIZE = 600
 
     def __init__(self):
         self.selected_model = ModelType.HOSODA
