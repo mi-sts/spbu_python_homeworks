@@ -21,7 +21,6 @@ class Device(Enum):
 
 
 class ImageConverter:
-    MAX_IMAGE_SIZE = 1280
     MODELS_DIRECTORY = "models"
 
     def __init__(self):

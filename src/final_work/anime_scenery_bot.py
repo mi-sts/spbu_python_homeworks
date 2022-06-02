@@ -15,6 +15,8 @@ from src.final_work.image_converter import ImageConverter, ModelType
 
 
 class AnimeSceneryBot:
+    MAX_IMAGE_SIZE = 1280
+
     def __init__(self):
         self.selected_model = ModelType.HOSODA
         self.updater = Updater(token="TOKEN")
@@ -26,14 +28,20 @@ class AnimeSceneryBot:
         self.updater.idle()
 
     def _image_loaded(self, update: Update, context: CallbackContext):
-        image_file_id = update.message.photo[-1]
+        image_file = update.message.photo[-1]
+        if image_file.width >= AnimeSceneryBot.MAX_IMAGE_SIZE or image_file.height >= AnimeSceneryBot.MAX_IMAGE_SIZE:
+
 
         with TemporaryFile() as temp_file:
-            context.bot.get_file(image_file_id).download(out=temp_file)
+            context.bot.get_file(image_file).download(out=temp_file)
             converted_image = self._convert_image(temp_file)
             converted_image_name = f"converted_{temp_file.name}"
 
         self._send_image(update, converted_image, converted_image_name)
+
+    def _large_image_loaded(self, update: Update):
+        update.message.reply_text("Loading image should not be larger than 1280px in width or height!")
+        self._show_model_selection_keyboard()
 
     def _convert_image(self, image_file: IO) -> Image:
         converter = ImageConverter()
