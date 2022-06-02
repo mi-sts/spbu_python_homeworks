@@ -61,7 +61,7 @@ class AnimeSceneryBot:
     def _start(self, update: Update, context: CallbackContext):
         user_first_name = update.effective_user.first_name
         update.message.reply_text(
-            f"Hi! {user_first_name}\nI can turn an ordinary scenery into an anime sketch!", quote=True
+            f"Hi, {user_first_name}!\nI can turn an ordinary scenery into an anime sketch!", quote=True
         )
         self._show_model_selection_keyboard(update)
 
