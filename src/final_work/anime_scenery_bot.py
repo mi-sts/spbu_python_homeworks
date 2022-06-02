@@ -29,7 +29,6 @@ class AnimeSceneryBot:
 
     def _image_loaded(self, update: Update, context: CallbackContext):
         image_file = update.message.photo[-1]
-        update.message.reply_text(image_file.width)
         if image_file.width >= AnimeSceneryBot.MAX_IMAGE_SIZE or image_file.height >= AnimeSceneryBot.MAX_IMAGE_SIZE:
             self._large_image_loaded(update)
             return
