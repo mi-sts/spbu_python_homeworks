@@ -17,7 +17,7 @@ from src.final_work.image_converter import ImageConverter, ModelType
 
 class AnimeSceneryBot:
     def __init__(self):
-        self.updater = Updater(token="5466323595:AAEB4NALsz1ylSk7-VD4BQgiX9BpwDDNnfk")
+        self.updater = Updater(token="TOKEN")
         self.dispatcher = self.updater.dispatcher
         self.dispatcher.add_handler(CommandHandler("start", self._start, run_async=True))
         self.dispatcher.add_handler(MessageHandler(Filters.photo, self._image_loaded, run_async=True))
