@@ -30,7 +30,7 @@ class AnimeSceneryBot:
     def _image_loaded(self, update: Update, context: CallbackContext):
         image_file = update.message.photo[-1]
         if image_file.width >= AnimeSceneryBot.MAX_IMAGE_SIZE or image_file.height >= AnimeSceneryBot.MAX_IMAGE_SIZE:
-
+            self._large_image_loaded(update)
 
         with TemporaryFile() as temp_file:
             context.bot.get_file(image_file).download(out=temp_file)
@@ -41,7 +41,7 @@ class AnimeSceneryBot:
 
     def _large_image_loaded(self, update: Update):
         update.message.reply_text("Loading image should not be larger than 1280px in width or height!")
-        self._show_model_selection_keyboard()
+        self._show_model_selection_keyboard(update)
 
     def _convert_image(self, image_file: IO) -> Image:
         converter = ImageConverter()
