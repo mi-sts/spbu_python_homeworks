@@ -26,4 +26,5 @@
 
 ### Final work #6:
 * Implement a telegram bot that uses neural networks to process any data.
-I have decide to implement a bot which stylizes the photos sent by the user under the anime style.
+
+  I have decided to implement a bot which stylizes the photos sent by the user under the anime style.
